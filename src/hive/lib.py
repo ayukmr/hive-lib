@@ -19,8 +19,16 @@ def move(func):
 
     return func
 
-async def send(ws, data):
-    await ws.send(json.dumps(data))
+def run():
+    if move_fn is None:
+        raise RuntimeError('no function marked @hive.move')
+
+    id = input('id: ')
+    game = int(input('game: '))
+
+    print('---')
+
+    asyncio.run(listen(id, game))
 
 async def listen(id, game):
     global path_map
@@ -64,16 +72,8 @@ async def listen(id, game):
             elif data['type'] == 'error':
                 raise RuntimeError(data['message'])
 
-def run():
-    if move_fn is None:
-        raise RuntimeError('no function marked @hive.move')
-
-    id = input('id: ')
-    game = int(input('game: '))
-
-    print('---')
-
-    asyncio.run(listen(id, game))
+async def send(ws, data):
+    await ws.send(json.dumps(data))
 
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
