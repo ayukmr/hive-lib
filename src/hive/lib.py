@@ -3,6 +3,8 @@ import websockets
 
 import json
 
+AUTH = '9fe2d786-82e4-4901-a969-9fe7af2d8988'
+
 move_fn = None
 path_map = None
 
@@ -33,7 +35,7 @@ def run():
 async def listen(id, game):
     global path_map
 
-    async with websockets.connect(f'ws://localhost:3000/play?id={id}&game={game}') as ws:
+    async with websockets.connect(f'wss://hive-api.ayukmr.com/play?auth={AUTH}&id={id}&game={game}') as ws:
         async for body in ws:
             data = json.loads(body)
 
