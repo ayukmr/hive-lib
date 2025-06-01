@@ -35,7 +35,9 @@ def run():
 async def listen(id, game):
     global path_map
 
-    async with websockets.connect(f'wss://hive-api.ayukmr.com/play?auth={AUTH}&id={id}&game={game}') as ws:
+    async with websockets.connect(
+        f'wss://hive-api.ayukmr.com/play?auth={AUTH}&id={id}&game={game}'
+    ) as ws:
         async for body in ws:
             data = json.loads(body)
 
