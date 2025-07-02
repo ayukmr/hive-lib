@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
     "websockets>=15.0.1",
     "pathfinding>=1.0.17",
+    "pyglet>=2.1.6",
 ]
 requires-python = ">= 3.8"
 

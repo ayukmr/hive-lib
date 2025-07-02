@@ -12,5 +12,7 @@
 -e file:.
 pathfinding==1.0.17
     # via hive
+pyglet==2.1.6
+    # via hive
 websockets==15.0.1
     # via hive
