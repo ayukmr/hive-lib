@@ -10,18 +10,12 @@ class Renderer:
     def __init__(self, size):
         self.size = size
 
-        self.window = pyglet.window.Window(1875, 96 * self.size, 'Hive')
+        self.window = pyglet.window.Window(1875 / 2, 96 * self.size / 2, 'Hive')
         self.data = None
 
         @self.window.event
         def on_draw():
             self.window.clear()
-
-            pyglet.shapes.Rectangle(
-                0, 0, 1875, 96 * self.size,
-                color=(18, 18, 18)
-            ).draw()
-
             self.render()
 
     def run(self):
