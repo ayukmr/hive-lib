@@ -2,19 +2,22 @@ from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
 
+SIZE = 15
+TURNS = 200
+
 path_map = None
 
 def load_map(walls):
     global path_map
 
     if path_map is None:
-        path_map = [[1 for _ in range(15)] for _ in range(15)]
+        path_map = [[1 for _ in range(SIZE)] for _ in range(SIZE)]
 
         for wall in walls:
             x, y = wall['x'], wall['y']
             path_map[y][x] = 0
 
-def towards(pos, dest):
+def astar(pos, dest):
     grid = Grid(matrix=path_map)
 
     p_x, p_y = pos
@@ -25,6 +28,12 @@ def towards(pos, dest):
 
     finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
     path, _ = finder.find_path(start, end, grid)
+
+    return path
+
+def towards(pos, dest):
+    p_x, p_y = pos
+    path = astar(pos, dest)
 
     step = path[1] if len(path) > 1 else None
 
@@ -41,3 +50,8 @@ def towards(pos, dest):
         return dirs[delta]
     else:
         return 'stay'
+
+def length(pos, dest):
+    path = astar(pos, dest)
+
+    return len(path)

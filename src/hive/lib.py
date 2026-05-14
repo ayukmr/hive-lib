@@ -1,14 +1,9 @@
 import asyncio
 
-from . import socket, tester
-
 move_fn = None
 
 def move(func):
     global move_fn
-
-    if move_fn is not None:
-        raise RuntimeError('only one function can be marked @hive.move')
 
     if func.__code__.co_argcount != 1:
         raise TypeError(f'{func.__name__} must take exactly 1 argument')
@@ -17,11 +12,12 @@ def move(func):
 
     return func
 
-def run():
+def run(id):
+    from . import socket
+
     if move_fn is None:
         raise RuntimeError('no function marked @hive.move')
 
-    id = input('id: ')
     game = int(input('game: '))
 
     print('---')
@@ -29,6 +25,8 @@ def run():
     asyncio.run(socket.listen(id, game, move_fn))
 
 def test():
+    from . import tester
+
     if move_fn is None:
         raise RuntimeError('no function marked @hive.move')
 

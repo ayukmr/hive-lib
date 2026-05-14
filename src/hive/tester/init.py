@@ -1,11 +1,10 @@
 import random
 
 from .noise import Noise
+from ..utils import SIZE
 
 class Init:
-    def __init__(self, size):
-        self.size = size
-
+    def __init__(self):
         self.players = []
         self.hives   = []
         self.flowers = []
@@ -22,9 +21,9 @@ class Init:
 
         locs = [
             (3, 3),
-            (self.size - 1 - 3, 3),
-            (3, self.size - 1 - 3),
-            (self.size - 1 - 3, self.size - 1 - 3)
+            (SIZE - 1 - 3, 3),
+            (3, SIZE - 1 - 3),
+            (SIZE - 1 - 3, SIZE - 1 - 3)
         ]
 
         for num, p_id in enumerate(players):
@@ -47,10 +46,10 @@ class Init:
 
     def create_walls(self):
         noise = Noise()
-        scale = 1.0 / self.size
+        scale = 1.0 / SIZE
 
-        for y in range(2, self.size - 2):
-            for x in range(2, self.size - 2):
+        for y in range(2, SIZE - 2):
+            for x in range(2, SIZE - 2):
                 sample = noise.sample(x * 4 * scale, y * 4 * scale)
 
                 if sample <= 0.7 or self.taken(x, y):
@@ -60,12 +59,12 @@ class Init:
 
     def create_flowers(self):
         for _ in range(random.randint(10, 15)):
-            x = random.randint(0, self.size - 1)
-            y = random.randint(0, self.size - 1)
+            x = random.randint(0, SIZE - 1)
+            y = random.randint(0, SIZE - 1)
 
             while self.taken(x, y):
-                x = random.randint(0, self.size - 1)
-                y = random.randint(0, self.size - 1)
+                x = random.randint(0, SIZE - 1)
+                y = random.randint(0, SIZE - 1)
 
             self.flowers.append({
                 'x': x,

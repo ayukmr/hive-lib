@@ -3,21 +3,20 @@ import random
 from .init import Init
 from .renderer import Renderer
 
-from ..utils import towards, load_map
+from ..utils import SIZE, TURNS, load_map
 
 class Runner:
-    def __init__(self, size, move_fn):
-        self.size = size
+    def __init__(self, move_fn):
         self.move_fn = move_fn
 
-        self.renderer = Renderer(size)
+        self.renderer = Renderer()
 
         self.game = {
             'id': 1,
             'turn': 1
         }
 
-        init = Init(size)
+        init = Init()
 
         self.players = init.players
         self.hives   = init.hives
@@ -26,8 +25,8 @@ class Runner:
 
         load_map(self.walls)
 
-    def turn(self, turns):
-        if self.game['turn'] >= turns:
+    def turn(self):
+        if self.game['turn'] >= TURNS:
             return
 
         data = self.data()
@@ -76,7 +75,7 @@ class Runner:
         x = player['x'] + dx
         y = player['y'] + dy
 
-        if not 0 <= x < self.size or not 0 <= y < self.size:
+        if not 0 <= x < SIZE or not 0 <= y < SIZE:
             return
 
         blocked = any(

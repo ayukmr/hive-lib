@@ -1,12 +1,14 @@
 import pyglet
 
+from hive.utils import TURNS
+
 from .runner import Runner
 
-def run(move_fn, turns=20, size=15):
-    tester = Runner(size, move_fn)
+def run(move_fn):
+    tester = Runner(move_fn)
 
     pyglet.clock.schedule_interval(
-        lambda _: tester.turn(turns), 1
+        lambda _: tester.turn(), TURNS / 2000
     )
 
     tester.renderer.run()

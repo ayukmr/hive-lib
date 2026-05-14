@@ -3,14 +3,16 @@ import pyglet
 from pyglet.gl import GL_NEAREST
 from pyglet.image import Texture
 
+from importlib.resources import files
+
+from ..utils import SIZE
+
 Texture.default_mag_filter = GL_NEAREST
 Texture.default_min_filter = GL_NEAREST
 
 class Renderer:
-    def __init__(self, size):
-        self.size = size
-
-        self.window = pyglet.window.Window(1875 / 2, 96 * self.size / 2, 'Hive')
+    def __init__(self):
+        self.window = pyglet.window.Window(1875 / 2, 96 * SIZE / 2, 'Hive')
         self.data = None
 
         @self.window.event
@@ -30,8 +32,8 @@ class Renderer:
 
         image = self.load_image('tiles/grass.png')
 
-        for y in range(self.size):
-            for x in range(self.size):
+        for y in range(SIZE):
+            for x in range(SIZE):
                 self.draw_image(image, x, y)
 
         tiles = [
@@ -60,7 +62,7 @@ class Renderer:
             sprite.draw()
 
         self.draw_label(
-            f'Turn {self.data.game['turn']}',
+            f"Turn {self.data.game['turn']}",
             1540,
             1220,
             size=28,
@@ -80,7 +82,7 @@ class Renderer:
             )
 
             self.draw_label(
-                f'Pollen: {player['pollen']}',
+                f"Pollen: {player['pollen']}",
                 1545,
                 1090 - 65 - off,
                 highlight=highlight
@@ -92,14 +94,14 @@ class Renderer:
             )
 
             self.draw_label(
-                f'Hive: {hive['pollen']}',
+                f"Hive: {hive['pollen']}",
                 1545,
                 1090 - 120 - off,
                 highlight=highlight
             )
 
     def load_image(self, path):
-        image = pyglet.image.load(f'src/hive/tester/assets/{path}')
+        image = pyglet.image.load(str(files('hive.tester') / 'assets' / path))
 
         image.anchor_x = 0
         image.anchor_y = 0
