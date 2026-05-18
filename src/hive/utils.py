@@ -3,7 +3,8 @@ from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
 
 SIZE = 15
-TURNS = 200
+TURNS = 250
+SECS = 30
 
 path_map = None
 

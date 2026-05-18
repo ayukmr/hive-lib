@@ -198,10 +198,7 @@ class Runner:
             h_player = hive['player']
             h_pollen = hive['pollen']
 
-            h_delta = 1 if p_id == h_player else -1
-
-            if (h_delta == 1 and p_pollen == 0) or (h_delta == -1 and h_pollen == 0):
-                continue
+            h_delta = min(1, p_pollen) if p_id == h_player else -min(10, h_pollen)
 
             player['pollen'] = p_pollen + -h_delta
             hive['pollen'] = h_pollen + h_delta
