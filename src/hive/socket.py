@@ -17,13 +17,15 @@ async def listen(id, game, move_fn):
 
                 load_map(data['walls'])
 
+                for player in data['players']:
+                    player['hive'] = [h for h in data['hives'] if h['player'] == player['id']][0]
+
                 player = [p for p in data['players'] if p['id'] == id][0]
-                hive = [h for h in data['hives'] if h['player'] == id][0]
 
                 out = move_fn(
                     {
                         'self': player,
-                        'hive': hive,
+                        'hive': player['hive'],
 
                         'game':    data['game'],
                         'players': data['players'],

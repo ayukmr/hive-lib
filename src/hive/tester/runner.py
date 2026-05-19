@@ -6,8 +6,9 @@ from .renderer import Renderer
 from ..utils import SIZE, TURNS, load_map
 
 class Runner:
-    def __init__(self, move_fn):
+    def __init__(self, move_fn, copy):
         self.move_fn = move_fn
+        self.copy = copy
 
         self.renderer = Renderer()
 
@@ -31,22 +32,24 @@ class Runner:
 
         data = self.data()
 
+        for player in data['players']:
+            player['hive'] = [h for h in data['hives'] if h['player'] == player['id']][0]
+
         for player in self.players:
             id = player['id']
 
             plyr = [p for p in data['players'] if p['id'] == id][0]
-            hive = [h for h in data['hives'] if h['player'] == id][0]
 
             local = data | {
                 'self': plyr,
-                'hive': hive
+                'hive': plyr['hive']
             }
 
             if id == 'self':
                 out = self.move_fn(local)
                 print(f'> {out}')
             else:
-                out = self.bot(local)
+                out = self.move_fn(local) if self.copy else self.bot(local)
 
             self.move(player, out)
 
@@ -198,7 +201,7 @@ class Runner:
             h_player = hive['player']
             h_pollen = hive['pollen']
 
-            h_delta = min(1, p_pollen) if p_id == h_player else -min(10, h_pollen)
+            h_delta = p_pollen if p_id == h_player else -min(10, h_pollen)
 
             player['pollen'] = p_pollen + -h_delta
             hive['pollen'] = h_pollen + h_delta

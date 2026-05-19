@@ -18,8 +18,14 @@ def load_map(walls):
             x, y = wall['x'], wall['y']
             path_map[y][x] = 0
 
-def astar(pos, dest):
-    grid = Grid(matrix=path_map)
+def astar(pos, dest, avoid):
+    clone = [list(r) for r in path_map]
+
+    for x, y in avoid:
+        if 0 <= y < SIZE and 0 <= x < SIZE:
+            clone[y][x] = 0
+
+    grid = Grid(matrix=clone)
 
     p_x, p_y = pos
     d_x, d_y = dest
@@ -32,9 +38,9 @@ def astar(pos, dest):
 
     return path
 
-def towards(pos, dest):
+def towards(pos, dest, avoid=[]):
     p_x, p_y = pos
-    path = astar(pos, dest)
+    path = astar(pos, dest, avoid)
 
     step = path[1] if len(path) > 1 else None
 
@@ -52,7 +58,7 @@ def towards(pos, dest):
     else:
         return 'stay'
 
-def length(pos, dest):
-    path = astar(pos, dest)
+def length(pos, dest, avoid=[]):
+    path = astar(pos, dest, avoid)
 
     return len(path)
