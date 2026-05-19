@@ -52,7 +52,7 @@ class Init:
             for x in range(2, SIZE - 2):
                 sample = noise.sample(x * 4 * scale, y * 4 * scale)
 
-                if sample <= 0.7 or self.taken(x, y):
+                if sample <= 0.6 or self.taken(x, y):
                     continue
 
                 self.walls.append({ 'x': x, 'y': y })
