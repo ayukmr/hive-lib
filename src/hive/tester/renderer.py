@@ -36,21 +36,18 @@ class Renderer:
             for x in range(SIZE):
                 self.draw_image(image, x, y)
 
-        tiles = [
-            (self.data.hives,   'hive'),
-            (self.data.flowers, 'flower'),
-            (self.data.walls,   'wall')
-        ]
-
-        for objs, tile in tiles:
+        for objs, tile in [(self.data.flowers, 'flower'), (self.data.walls, 'wall')]:
             image = self.load_image(f'tiles/{tile}.png')
 
             for obj in objs:
                 self.draw_image(image, obj['x'], obj['y'])
 
+        for num, hive in enumerate(self.data.hives):
+            image = self.load_image(f'hives/{num}.png')
+            self.draw_image(image, hive['x'], hive['y'])
+
         for num, player in enumerate(self.data.players):
             image = self.load_image(f'bees/{num}.png')
-
             self.draw_image(image, player['x'], player['y'])
 
             sprite = pyglet.sprite.Sprite(
