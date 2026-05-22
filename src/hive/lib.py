@@ -27,10 +27,10 @@ def run(id=None):
 
     asyncio.run(socket.listen(id, game, move_fn))
 
-def test(copy=False):
+def test(copy=False, headless=False):
     from . import tester
 
     if move_fn is None:
         raise RuntimeError('no function marked @hive.move')
 
-    tester.run(move_fn, copy)
+    tester.run(move_fn, copy, headless)

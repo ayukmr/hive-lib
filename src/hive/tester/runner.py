@@ -6,11 +6,11 @@ from .renderer import Renderer
 from ..utils import SIZE, TURNS, load_map
 
 class Runner:
-    def __init__(self, move_fn, copy):
+    def __init__(self, move_fn, copy, headless):
         self.move_fn = move_fn
         self.copy = copy
 
-        self.renderer = Renderer()
+        self.renderer = Renderer() if not headless else None
 
         self.game = {
             'id': 1,
@@ -97,7 +97,8 @@ class Runner:
 
         self.game['turn'] += 1
 
-        self.renderer.load(self)
+        if self.renderer:
+            self.renderer.load(self)
 
     def handle_flowers(self):
         for flower in self.flowers:
