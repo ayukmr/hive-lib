@@ -48,29 +48,37 @@ class Init:
         noise = Noise()
         scale = 1.0 / SIZE
 
-        for y in range(2, SIZE - 2):
-            for x in range(2, SIZE - 2):
+        for y in range(1, SIZE // 2):
+            for x in range(1, SIZE // 2):
                 sample = noise.sample(x * 4 * scale, y * 4 * scale)
 
                 if sample <= 0.6 or self.taken(x, y):
                     continue
 
-                self.walls.append({ 'x': x, 'y': y })
+                fx = SIZE - x - 1
+                fy = SIZE - y - 1
+
+                self.walls.append({'x': x, 'y': y})
+                self.walls.append({'x': fx, 'y': y})
+                self.walls.append({'x': x, 'y': fy})
+                self.walls.append({'x': fx, 'y': fy})
 
     def create_flowers(self):
-        for _ in range(random.randint(10, 15)):
-            x = random.randint(0, SIZE - 1)
-            y = random.randint(0, SIZE - 1)
+        for _ in range(random.randint(3, 4)):
+            x = random.randint(0, SIZE // 2)
+            y = random.randint(0, SIZE // 2)
 
             while self.taken(x, y):
-                x = random.randint(0, SIZE - 1)
-                y = random.randint(0, SIZE - 1)
+                x = random.randint(0, SIZE // 2)
+                y = random.randint(0, SIZE // 2)
 
-            self.flowers.append({
-                'x': x,
-                'y': y,
-                'pollen': 0
-            })
+            fx = SIZE - x - 1
+            fy = SIZE - y - 1
+
+            self.flowers.append({'x': x, 'y': y, 'pollen': 0})
+            self.flowers.append({'x': fx, 'y': y, 'pollen': 0})
+            self.flowers.append({'x': x, 'y': fy, 'pollen': 0})
+            self.flowers.append({'x': fx, 'y': fy, 'pollen': 0})
 
     def taken(self, x, y):
         check = lambda os: any(
