@@ -65,12 +65,12 @@ class Init:
 
     def create_flowers(self):
         for _ in range(random.randint(3, 4)):
-            x = random.randint(0, SIZE // 2)
-            y = random.randint(0, SIZE // 2)
+            x = random.randint(0, SIZE // 2 - 1)
+            y = random.randint(0, SIZE // 2 - 1)
 
             while self.taken(x, y):
-                x = random.randint(0, SIZE // 2)
-                y = random.randint(0, SIZE // 2)
+                x = random.randint(0, SIZE // 2 - 1)
+                y = random.randint(0, SIZE // 2 - 1)
 
             fx = SIZE - x - 1
             fy = SIZE - y - 1

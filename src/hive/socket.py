@@ -1,5 +1,6 @@
 import websockets
 import json
+import traceback
 
 from .utils import load_map, TURNS
 
@@ -22,21 +23,25 @@ async def listen(id, game, move_fn):
 
                 player = [p for p in data['players'] if p['id'] == id][0]
 
-                out = move_fn(
-                    {
-                        'self': player,
-                        'hive': player['hive'],
+                out = 'stay'
 
-                        'game':    data['game'],
-                        'players': data['players'],
-                        'walls':   data['walls'],
-                        'flowers': data['flowers'],
-                        'hives':   data['hives']
-                    }
-                )
+                try:
+                    out = move_fn(
+                        {
+                            'self': player,
+                            'hive': player['hive'],
+
+                            'game':    data['game'],
+                            'players': data['players'],
+                            'walls':   data['walls'],
+                            'flowers': data['flowers'],
+                            'hives':   data['hives']
+                        }
+                    )
+                except Exception as e:
+                    traceback.print_exception(e)
 
                 print(f'> {out}')
-
                 await send(ws, {'type': 'move', 'dir': out})
 
                 if data['game']['turn'] == TURNS:

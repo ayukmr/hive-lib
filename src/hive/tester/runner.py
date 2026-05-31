@@ -1,8 +1,7 @@
+import copy
 import random
 
 from .init import Init
-from .renderer import Renderer
-
 from ..utils import SIZE, TURNS, load_map
 
 class Runner:
@@ -10,7 +9,11 @@ class Runner:
         self.move_fn = move_fn
         self.copy = copy
 
-        self.renderer = Renderer() if not headless else None
+        if not headless:
+            from .renderer import Renderer
+            self.renderer = Renderer()
+        else:
+            self.renderer = None
 
         self.game = {
             'id': 1,
@@ -35,12 +38,14 @@ class Runner:
         for player in data['players']:
             player['hive'] = [h for h in data['hives'] if h['player'] == player['id']][0]
 
+        cpy = copy.deepcopy(self.data())
+
         for player in self.players:
             id = player['id']
 
-            plyr = [p for p in data['players'] if p['id'] == id][0]
+            plyr = [p for p in cpy['players'] if p['id'] == id][0]
 
-            local = data | {
+            local = copy.deepcopy(cpy) | {
                 'self': plyr,
                 'hive': plyr['hive']
             }
